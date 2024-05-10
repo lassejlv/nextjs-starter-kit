@@ -2,9 +2,9 @@
 
 import { prisma } from "@/lib/prisma";
 
-export const CreatePost = async (title: string, content: string, userId: string) => {
+export const CreatePost = async (title: string, content: string, userId: string): Promise<number | false> => {
   try {
-    await prisma.posts.create({
+    const post = await prisma.posts.create({
       data: {
         title,
         content,
@@ -13,7 +13,7 @@ export const CreatePost = async (title: string, content: string, userId: string)
       },
     });
 
-    return true;
+    return post.id;
   } catch (error) {
     return false;
   }

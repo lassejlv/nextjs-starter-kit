@@ -8,20 +8,21 @@ import { DeletePost } from "@/actions/post";
 import { useToast } from "./ui/use-toast";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Spinner from "./spinner";
 
 export default function PostsContainer({ posts }: { posts: Posts[] }) {
   const router = useRouter();
   const { toast } = useToast();
   const [postsList, setPostsList] = useState<Posts[]>(posts);
+  const [deleteLoading, setDeleteLoading] = useState<number | null>(null);
 
   return (
     <>
-      <h1 className="text-4xl font-bold">Posts</h1>
       <Button variant="outline" onClick={() => router.push("/dashboard/new")} className="my-2">
         New Post
       </Button>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
         {postsList.map((post) => (
           <Card>
             <CardHeader>
@@ -33,7 +34,13 @@ export default function PostsContainer({ posts }: { posts: Posts[] }) {
                     <Button
                       variant="secondary"
                       onClick={async () => {
+                        setDeleteLoading(post.id);
+
                         const deleted = await DeletePost(post.id);
+
+                        new Promise((resolve) => setTimeout(resolve, 1500));
+
+                        toast({ title: "Post deleted" });
 
                         if (deleted) {
                           toast({
@@ -49,7 +56,7 @@ export default function PostsContainer({ posts }: { posts: Posts[] }) {
                         }
                       }}
                     >
-                      <Trash2 />
+                      {deleteLoading === post.id ? <Spinner /> : <Trash2 />}
                     </Button>
                     <Button
                       variant="secondary"

@@ -7,7 +7,7 @@ COPY . .
 RUN bun install
 RUN bun run build
 
-RUN bunx --bun prisma generate
+RUN bunx --bun prisma db push
 
 EXPOSE 3000
 

@@ -8,10 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 
 export default function page() {
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const { user } = useKindeBrowserClient();
@@ -61,10 +63,13 @@ export default function page() {
 
     const created = await CreatePost(parsedData.data.title, parsedData.data.content, user.id);
 
+    new Promise((resolve) => setTimeout(resolve, 1000));
+
     if (created) {
       toast({
         title: "Post created",
       });
+      router.push(`/posts/${Number(created)}`);
     } else {
       toast({
         title: "Error creating post",

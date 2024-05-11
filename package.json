@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
-    "start": "bun x prisma generate && next start",
+    "start": "bun x prisma generate && next start --port ${PORT-3000}",
     "lint": "next lint"
   },
   "dependencies": {

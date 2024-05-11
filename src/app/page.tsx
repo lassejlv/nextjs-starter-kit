@@ -2,14 +2,12 @@
 
 import Spinner from "@/components/spinner";
 import { Button } from "@/components/ui/button";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { Github, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const { user } = useKindeBrowserClient();
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
@@ -25,15 +23,15 @@ export default function Home() {
         </Button>
         <Button
           variant="outline"
-          disabled={user ? true : false}
+          disabled={loading}
           onClick={() => {
             setLoading(true);
 
             new Promise((resolve) => {
-              setTimeout(resolve, 1000);
+              setTimeout(resolve, 2000);
             });
 
-            router.push("/api/auth/login");
+            router.push("/api/auth/signin");
           }}
         >
           {loading ? (

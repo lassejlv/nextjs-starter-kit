@@ -2,14 +2,14 @@
 
 import { prisma } from "@/lib/prisma";
 
-export const CreatePost = async (title: string, content: string, userId: string): Promise<number | false> => {
+export const CreatePost = async (title: string, content: string, userId: number): Promise<number | false> => {
   try {
     const post = await prisma.posts.create({
       data: {
         title,
         content,
         published: true,
-        kinde_userId: userId,
+        user_id: userId,
       },
     });
 

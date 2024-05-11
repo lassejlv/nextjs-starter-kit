@@ -1,8 +1,15 @@
-import { withAuth } from "@kinde-oss/kinde-auth-nextjs/middleware";
+import { auth } from "@/auth";
 
-export default function middleware(req: Request) {
-  return withAuth(req);
-}
+export default auth((req) => {
+  if (!req.auth) {
+    const url = req.url.replace(req.nextUrl.pathname, "/api/auth/signin");
+    console.log(url);
+
+    return Response.redirect(url);
+  }
+});
+
+// Optionally, don't invoke Middleware on some paths
 export const config = {
   matcher: ["/dashboard/:path*"],
 };
